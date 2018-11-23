@@ -19,18 +19,18 @@ module.exports = {
     output: {
         filename: '[name].[hash:8].js',
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                styles: {
-                    name: 'styles',
-                    test: /\.css$/,
-                    chunks: 'all',
-                    enforce: true
-                }
-            }
-        }
-    },
+    // optimization: {
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             styles: {
+    //                 name: 'styles',
+    //                 test: /\.css$/,
+    //                 chunks: 'all',
+    //                 enforce: true
+    //             }
+    //         }
+    //     }
+    // },
     watch: true,
     devServer: {
         contentBase: './src',
@@ -70,12 +70,12 @@ module.exports = {
             filename: 'index.html',
             template: 'src/index.html',
         }),
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-        }),
-        new PurgecssPlugin({
-            paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
-        }),
+        // new MiniCssExtractPlugin({
+        //     filename: "[name].css",
+        // }),
+        // new PurgecssPlugin({
+        //     paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+        // }),
     ],
 };
 
