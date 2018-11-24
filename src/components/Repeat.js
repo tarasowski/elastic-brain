@@ -3,7 +3,7 @@ import { h } from 'virtual-dom'
 import { startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg } from '../store/msg'
 
 
-const { div, p, button } = hh(h)
+const { h1, div, p, button } = hh(h)
 
 
 const createButton = className => value => onclick =>
@@ -19,7 +19,8 @@ const questionView = className => model =>
 
 
 function repeatView(dispatch, model) {
-    return div({ className: 'border-b py-4 my-4' }, [
+    return div({ className: 'container mx-auto border p-8 mb-8' }, [
+        h1({ className: 'my-8' }, 'Learn Cards'),
         questionView('mb-4')(model),
         answerView('mb-4')(model),
         createButton('border border-grey text-white font-bold py-2 px-2 rounded bg-grey hover:bg-grey-dark mr-4')('Repeat')(() => dispatch(startRepeatMsg())),

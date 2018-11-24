@@ -2,7 +2,7 @@ import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
 import { newQuestionMsg, newAnswerMsg, saveNewQuestionMsg } from '../store/msg'
 
-const { div, p, button, form, label, input, textarea } = hh(h)
+const { h1, div, p, button, form, label, input, textarea } = hh(h)
 
 
 const inputSet = (name, value) => oninput =>
@@ -19,7 +19,8 @@ const inputSet = (name, value) => oninput =>
 
 
 const quizView = (dispatch, model) => {
-    return div({ className: 'h-64' }, [
+    return div({ className: 'container border mx-auto p-8 mb-10' }, [
+        h1({}, 'Add New Question'),
         inputSet('Question', model.newQuestion)(e => dispatch(newQuestionMsg(e.target.value))),
         inputSet('Answer', model.newAnswer)(e => dispatch(newAnswerMsg(e.target.value))),
         button({

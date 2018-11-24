@@ -1,9 +1,14 @@
+const checkForTodaysRepetitions = model =>
+    model.cards.filter(element => true)
+
+
 const startRepeat = model =>
     ({
         ...model,
-        repeatQuestion: model.repetition[0].question,
-        repeatAnswer: model.repetition[0].answer,
-        currRepeatId: model.repetition[0].id,
+        repetition: [...checkForTodaysRepetitions(model)],
+        repeatQuestion: [...checkForTodaysRepetitions(model)][0].question,
+        repeatAnswer: [...checkForTodaysRepetitions(model)][0].answer,
+        currRepeatId: 0,
         nextRepeatId: model.repetition.length
     })
 
@@ -12,10 +17,26 @@ const showRepeatAnswer = model => ({
     showRepeatAnswer: true,
 })
 
+const nextDateForRepetition = days =>
+    new Date().setDate(new Date().getDate() + Math.floor(Math.random() * days))
+
+
+const updateNumberOfRepetitions = model =>
+    model.cards.map(element => {
+        return element.id === model.currRepeatId
+            ? {
+                ...element,
+                numberOfRepetitions: element.numberOfRepetitions === undefined ? 1 : element.numberOfRepetitions + 1,
+                repeatNextDate: element.numberOfRepetitions === undefined ? nextDateForRepetition(2) : nextDateForRepetition(element.numberOfRepetitions)
+            }
+            : element
+    })
+
 const answerRepeatStatus = msg => model => {
     return msg.status === 'yes'
         ? {
             ...model,
+            cards: updateNumberOfRepetitions(model),
             repetition: model.repetition.filter(element => element.id !== model.currRepeatId)
         }
 
