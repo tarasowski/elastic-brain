@@ -3,15 +3,16 @@ import { h } from 'virtual-dom'
 import fullCardView from './components/Card'
 import quizView from './components/AddQuestion'
 import repeatView from './components/Repeat'
+import fullCardViewLearnMode from './components/Learn'
 
-const { div, pre, p, br, hr } = hh(h)
+const { h1, div, pre, p, br, hr } = hh(h)
 
 function view(dispatch, model) {
     return div({ className: 'container mx-auto py-4' }, [
-        fullCardView(dispatch, model),
+        //fullCardView(dispatch, model),
         quizView(dispatch, model),
-        div({ className: 'border-b' }),
         repeatView(dispatch, model),
+        fullCardViewLearnMode(dispatch, model),
         pre({ className: '' }, JSON.stringify(model, null, 4))
     ])
 }

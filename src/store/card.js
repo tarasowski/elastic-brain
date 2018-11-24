@@ -1,4 +1,14 @@
-const startQuiz = model => ({ ...model, currQuestion: model.cards[0].question, currAnswer: model.cards[0].answer, currId: model.cards[0].id, showAnswer: false, nextId: model.cards[0].id + 1 })
+const startQuiz = model => (
+    {
+        ...model,
+        currQuestion: model.cards[0].question,
+        currAnswer: model.cards[0].answer,
+        currId: model.cards[0].id,
+        showAnswer: false,
+        nextId: model.cards[0].id + 1
+    }
+)
+
 const showAnswer = model => ({ ...model, showAnswer: true })
 
 const addQuestionToRepetition = model => {
@@ -9,7 +19,7 @@ const addQuestionToRepetition = model => {
             {
                 id: model.currId,
                 question: model.currQuestion,
-                answer: model.currAnswer
+                answer: model.currAnswer,
             }
         ]
     }
@@ -30,11 +40,29 @@ const navigateToNextQuestion = model =>
             ...model
         }
 
+const nextDateForRepetition = days =>
+    new Date().setDate(new Date().getDate() + Math.floor(Math.random() * days))
+
+const updateCards = model =>
+    model.cards.map(element => {
+        return element.id === model.currId
+            ? {
+                id: model.currId,
+                question: model.currQuestion,
+                answer: model.currAnswer,
+                numberOfRepetitions: element.numberOfRepetitions === undefined ? 1 : element.numberOfRepetitions,
+                repeatNextDate: element.numberOfRepetitions === undefined ? nextDateForRepetition(1) : nextDateForRepetition(element.numberOfRepetitions)
+            }
+            : element
+    })
 
 
 const setAnswerStatus = msg => model =>
     msg.status === 'yes'
-        ? { ...model }
+        ? {
+            ...model,
+            cards: updateCards(model)
+        }
         : addQuestionToRepetition(model)
 
 export { startQuiz, showAnswer, addQuestionToRepetition, navigateToNextQuestion, setAnswerStatus }
