@@ -1,7 +1,7 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
 import fullCardView from './components/Card'
-import quizView from './components/Quiz'
+import quizView from './components/AddQuestion'
 import repeatView from './components/Repeat'
 
 const { div, pre, p, br, hr } = hh(h)

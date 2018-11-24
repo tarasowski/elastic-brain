@@ -1,6 +1,6 @@
 import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion } from './store/repeat'
 import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './store/card'
-import { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion } from './store/quiz'
+import { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion } from './store/add-question'
 
 export const MSGS = {
     START_QUIZ: 'START_QUIZ',

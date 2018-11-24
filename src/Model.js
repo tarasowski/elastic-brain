@@ -1,5 +1,5 @@
 import initModelCard from './store/card'
-import initModelAddNewQuiz from './store/quiz'
+import initModelAddNewQuiz from './store/add-question'
 import initModelRepeatCards from './store/repeat'
 
 
