@@ -1,17 +1,22 @@
 const initModel = {
-    nextId: 3,
+    currQuestion: '',
+    currAnswer: '',
+    currId: 0,
+    showAnswer: false,
+    nextId: 0,
+    newQuestion: '',
+    newAnswer: '',
+    newId: 0,
     cards: [
         {
-            id: 1,
+            id: 0,
             question: 'Q#1 My first question',
             answer: 'A#1 My first answer',
-            status: false
         },
         {
-            id: 2,
+            id: 1,
             question: 'Q#2 My second question',
-            answer: 'A#1 My second answer',
-            status: false
+            answer: 'A#2 My second answer',
         }
     ],
     repetition: [
