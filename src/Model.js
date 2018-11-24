@@ -1,23 +1,18 @@
+import initModelCard from './store/card'
+import initModelAddNewQuiz from './store/quiz'
+import initModelRepeatCards from './store/repeat'
+
+
 const initModel = {
-    currQuestion: '',
-    currAnswer: '',
-    currId: 0,
-    showAnswer: false,
-    nextId: 0,
-    newQuestion: '',
-    newAnswer: '',
-    newId: 0,
+    ...initModelCard,
+    ...initModelAddNewQuiz,
+    ...initModelRepeatCards,
     cards: [
         {
             id: 0,
             question: 'Q#1 My first question',
             answer: 'A#1 My first answer',
         },
-        {
-            id: 1,
-            question: 'Q#2 My second question',
-            answer: 'A#2 My second answer',
-        }
     ],
     repetition: [
 

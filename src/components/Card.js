@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg } from '../Update'
+import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg } from '../store/msg'
 
 const { div, p, button } = hh(h)
 

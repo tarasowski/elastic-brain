@@ -1,16 +1,15 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { newQuestionMsg, newAnswerMsg, saveNewQuestionMsg } from '../Update'
-import { curry } from 'ramda-x'
+import { newQuestionMsg, newAnswerMsg, saveNewQuestionMsg } from '../store/msg'
 
-const { div, p, button, form, label, input } = hh(h)
+const { div, p, button, form, label, input, textarea } = hh(h)
 
 
 const inputSet = (name, value) => oninput =>
-    div({}, [
-        label({ className: 'text-lg mr-4' }, name),
-        input({
-            className: 'border',
+    div({ className: '' }, [
+        label({ className: 'text-lg mr-4 block my-4' }, name),
+        textarea({
+            className: 'border w-full h-full',
             type: 'text',
             value,
             oninput
@@ -20,7 +19,7 @@ const inputSet = (name, value) => oninput =>
 
 
 const quizView = (dispatch, model) => {
-    return div({}, [
+    return div({ className: 'h-64' }, [
         inputSet('Question', model.newQuestion)(e => dispatch(newQuestionMsg(e.target.value))),
         inputSet('Answer', model.newAnswer)(e => dispatch(newAnswerMsg(e.target.value))),
         button({
