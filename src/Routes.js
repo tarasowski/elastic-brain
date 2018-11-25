@@ -2,6 +2,7 @@ import homeView from './components/Home'
 import quizView from './components/AddQuestion'
 import repeatView from './components/Repeat'
 import fullCardViewLearnMode from './components/Learn'
+import signupView from './components/Signup'
 
 
 const routes = [

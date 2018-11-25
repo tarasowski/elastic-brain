@@ -2,6 +2,8 @@ import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion }
 import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './store/card'
 import { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion } from './store/add-question'
 import { changeUrlState } from './store/router'
+import { captureUsername, capturePassword, captureEmail, capturePin } from './store/auth'
+
 
 export const MSGS = {
     START_QUIZ: 'START_QUIZ',
@@ -16,6 +18,12 @@ export const MSGS = {
     ANSWER_REPEAT_STATUS: 'ANSER_REPEAT_STATUS',
     NEXT_REPEAT_QUESTION: 'NEXT_REPEAT_QUESTION',
     CHANGE_URL_STATE: 'CHANGE_URL_STATE',
+    SUBMIT_USERNAME: 'SUBMIT_USERNAME',
+    SUBMIT_PASSWORD: 'SUBMIT_PASSWORD',
+    SUBMIT_EMAIL: 'SUBMIT_EMAIL',
+    SIGN_UP: 'SIGN_UP',
+    SUBMIT_PIN: 'SUBMIT_PIN',
+    SIGN_UP_CONFIRMATION: 'SIGN_UP_CONFIRMATION'
 }
 
 
@@ -39,6 +47,12 @@ const update = (msg, model) =>
         [MSGS.ANSWER_REPEAT_STATUS]: () => answerRepeatStatus(msg)(model),
         [MSGS.NEXT_REPEAT_QUESTION]: () => nextRepeatQuestion(model),
         [MSGS.CHANGE_URL_STATE]: () => changeUrlState(msg)(model),
+        [MSGS.SUBMIT_USERNAME]: () => captureUsername(msg.value)(model),
+        [MSGS.SUBMIT_PASSWORD]: () => capturePassword(msg.value)(model),
+        [MSGS.SUBMIT_EMAIL]: () => captureEmail(msg.value)(model),
+        [MSGS.SIGN_UP]: () => signUpNewUser(msg)(model),
+        [MSGS.SUBMIT_PIN]: () => capturePin(msg.value)(model),
+        [MSGS.SIGN_UP_CONFIRMATION]: () => confirmNewUser(msg)(model),
     })(msg.type)(model)
 
 

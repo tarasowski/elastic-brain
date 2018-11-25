@@ -1,7 +1,10 @@
 import { h, diff, patch } from 'virtual-dom'
 import createElement from 'virtual-dom/create-element'
 import { changeUrlStateMsg } from './Update';
+import Amplify, { Auth } from 'aws-amplify'
 
+import { awsconfig } from './aws-exports'
+Auth.configure(awsconfig)
 
 function app(initModel, update, view, node, routes) {
     let model = initModel

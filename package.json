@@ -33,6 +33,7 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "aws-amplify": "^1.1.10",
     "ramda-x": "^1.0.5"
   }
 }
