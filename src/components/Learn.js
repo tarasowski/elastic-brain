@@ -4,6 +4,11 @@ import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg } from '.
 
 const { h1, div, p, button } = hh(h)
 
+const nextButton = className => model => onclick =>
+    model.cards.length > model.nextId
+        ? button({ className, onclick }, 'Next')
+        : button({ className }, 'Start Over')
+
 
 const createButton = className => value => onclick =>
     button({ className, onclick }, value)
@@ -24,7 +29,7 @@ function fullCardViewLearnMode(dispatch, model) {
         answerView('mb-4')(model),
         createButton('border border-grey text-white font-bold py-2 px-2 rounded bg-grey hover:bg-grey-dark mr-4')('Start')(() => dispatch(startQuizMsg())),
         createButton('border border-blue text-white font-bold py-2 px-2 rounded bg-blue hover:bg-blue-dark mr-4')('Show answer')(() => dispatch(showAnswerMsg())),
-        createButton('border border-orange text-white font-bold py-2 px-2 rounded bg-orange hover:bg-orange-dark')('Next')(() => dispatch(nextQuestionMsg())),
+        nextButton('border border-orange text-white font-bold py-2 px-2 rounded bg-orange hover:bg-orange-dark')(model)(() => dispatch(nextQuestionMsg())),
     ])
 }
 
