@@ -23,6 +23,19 @@ const switchcase = cases => key => model =>
         ? cases[key]()
         : model /* this is an defaultCase for the switch loop here */
 
+const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
+
+const changeBrowserUrl = url =>
+    new Promise((resolve, reject) => {
+        history.pushState({ url: url }, null, url)
+        resolve('url changed')
+    })
+
+const changeUrlState = msg => model => {
+    return [{ ...model }, { url: () => changeBrowserUrl(msg.url) }]
+}
+
+export { changeUrlStateMsg }
 
 const update = (msg, model) =>
     switchcase({
@@ -37,6 +50,7 @@ const update = (msg, model) =>
         [MSGS.SHOW_REPEAT_ANSWER]: () => showRepeatAnswer(model),
         [MSGS.ANSWER_REPEAT_STATUS]: () => answerRepeatStatus(msg)(model),
         [MSGS.NEXT_REPEAT_QUESTION]: () => nextRepeatQuestion(model),
+        [MSGS.CHANGE_URL_STATE]: () => changeUrlState(msg)(model),
     })(msg.type)(model)
 
 
