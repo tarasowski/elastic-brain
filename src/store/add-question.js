@@ -13,8 +13,8 @@ const addNewAnswerToModel = msg => model =>
         newId: model.cards.length
     })
 
-const nextDateForRepetition = days =>
-    new Date().setDate(new Date().getDate() + Math.floor(Math.random() * days))
+const nextDateForRepetition = d =>
+    d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
 
 
 const saveNewQuestion = model =>
@@ -23,8 +23,8 @@ const saveNewQuestion = model =>
         newQuestion: '',
         newAnswer: '',
         newId: model.cards.length + 1,
-        cards: [...model.cards, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(0) }],
-        repetition: [...model.repetition, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(0) }]
+        cards: [...model.cards, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }],
+        repetition: [...model.repetition, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }]
     })
 
 export { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion }

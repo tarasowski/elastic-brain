@@ -19,7 +19,7 @@ const inputSet = (name, value) => oninput =>
 
 
 const quizView = (dispatch, model) => {
-    return div({ className: 'container border mx-auto p-8 mb-10' }, [
+    return div({ className: 'container border mx-auto p-8 mb-10d' }, [
         h1({}, 'Add New Question'),
         inputSet('Question', model.newQuestion)(e => dispatch(newQuestionMsg(e.target.value))),
         inputSet('Answer', model.newAnswer)(e => dispatch(newAnswerMsg(e.target.value))),
