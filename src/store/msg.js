@@ -45,4 +45,6 @@ const saveNewQuestionMsg = () => ({ type: MSGS.SAVE_NEW_QUESTION })
 
 const startRepeatMsg = () => ({ type: MSGS.START_REPEAT })
 
-export { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg, newQuestionMsg, newAnswerMsg, saveNewQuestionMsg, startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg }
+const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
+
+export { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg, newQuestionMsg, newAnswerMsg, saveNewQuestionMsg, startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg, changeUrlStateMsg }

@@ -1,6 +1,7 @@
 import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion } from './store/repeat'
 import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './store/card'
 import { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion } from './store/add-question'
+import { changeUrlState } from './store/router'
 
 export const MSGS = {
     START_QUIZ: 'START_QUIZ',
@@ -23,19 +24,6 @@ const switchcase = cases => key => model =>
         ? cases[key]()
         : model /* this is an defaultCase for the switch loop here */
 
-const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
-
-const changeBrowserUrl = url =>
-    new Promise((resolve, reject) => {
-        history.pushState({ url: url }, null, url)
-        resolve('url changed')
-    })
-
-const changeUrlState = msg => model => {
-    return [{ ...model }, { url: () => changeBrowserUrl(msg.url) }]
-}
-
-export { changeUrlStateMsg }
 
 const update = (msg, model) =>
     switchcase({

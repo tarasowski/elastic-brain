@@ -3,9 +3,9 @@ import createElement from 'virtual-dom/create-element'
 import { changeUrlStateMsg } from './Update';
 
 
-function app(initModel, update, view, node) {
+function app(initModel, update, view, node, routes) {
     let model = initModel
-    let currentView = view(dispatch, model)
+    let currentView = view(dispatch, model, routes)
     let rootNode = createElement(currentView)
     node.appendChild(rootNode)
 
@@ -13,7 +13,7 @@ function app(initModel, update, view, node) {
         const updates = update(msg, model)
         Array.isArray(updates) ? model = updates[0] : model = updates
         Array.isArray(updates) ? changeUrl(dispatch, updates[1]) : null
-        const updatedView = view(dispatch, model)
+        const updatedView = view(dispatch, model, routes)
         const patches = diff(currentView, updatedView)
         rootNode = patch(rootNode, patches)
         currentView = updatedView
