@@ -9,9 +9,11 @@
   "author": "Dimitri Tarasowski",
   "license": "MIT",
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
@@ -33,7 +35,8 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "@babel/runtime": "^7.1.5",
     "aws-amplify": "^1.1.10",
-    "ramda-x": "^1.0.5"
+    "axios": "^0.18.0"
   }
 }

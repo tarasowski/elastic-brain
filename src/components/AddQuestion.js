@@ -25,7 +25,7 @@ const quizView = (dispatch, model) => {
         inputSet('Answer', model.newAnswer)(e => dispatch(newAnswerMsg(e.target.value))),
         button({
             className: 'broder border-blue rounded bg-blue-dark text-white text-2xl my-4 p-2',
-            onclick: () => dispatch(saveNewQuestionMsg())
+            onclick: () => dispatch(saveNewQuestionMsg(model))
         }, 'Save')
     ])
 }

@@ -41,7 +41,7 @@ export const startQuizMsg = () => {
     }
 }
 
-export const saveNewQuestionMsg = () => ({ type: MSGS.SAVE_NEW_QUESTION })
+export const saveNewQuestionMsg = ({ newQuestion, newAnswer }) => ({ type: MSGS.SAVE_NEW_QUESTION, payload: { question: newQuestion, answer: newAnswer } })
 
 export const startRepeatMsg = () => ({ type: MSGS.START_REPEAT })
 

@@ -50,7 +50,7 @@ const update = (msg, model) =>
         [MSGS.NEXT_QUESTION]: () => navigateToNextQuestion(model),
         [MSGS.NEW_QUESTION]: () => addNewQuestionToModel(msg)(model),
         [MSGS.NEW_ANSWER]: () => addNewAnswerToModel(msg)(model),
-        [MSGS.SAVE_NEW_QUESTION]: () => saveNewQuestion(model),
+        [MSGS.SAVE_NEW_QUESTION]: () => saveNewQuestion(msg.payload)(model),
         [MSGS.START_REPEAT]: () => startRepeat(model),
         [MSGS.SHOW_REPEAT_ANSWER]: () => showRepeatAnswer(model),
         [MSGS.ANSWER_REPEAT_STATUS]: () => answerRepeatStatus(msg)(model),

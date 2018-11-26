@@ -3,6 +3,9 @@ import createElement from 'virtual-dom/create-element'
 import { changeUrlStateMsg } from './Update';
 import Amplify, { Auth } from 'aws-amplify'
 import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg } from './store/msg'
+import axios from 'axios'
+
+const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
 import { awsconfig } from './aws-exports'
 Auth.configure(awsconfig)
@@ -49,6 +52,29 @@ const signinAmp = username => password =>
 const storeAccessTokenCookie = jwt =>
     document.cookie = `accessToken=${jwt}`
 
+const saveQuestionToDynamoDb = payload => model => {
+    console.log(payload.question)
+    console.log(payload.answer)
+    return axios(awsconfig.GraphQL.endpoint,
+        {
+            method: 'post',
+            headers: {
+                Authorization: model.user.accessToken
+            },
+            data: {
+                query: `
+                mutation add {
+                    saveQuestion(question: "${payload.question}", answer: "${payload.answer}") {
+                      userId
+                      category
+                      question
+                      answer
+            }
+        }
+            `
+            }
+        })
+}
 
 const performIO = (dispatch, command, model) => {
     return command === null
@@ -63,7 +89,9 @@ const performIO = (dispatch, command, model) => {
                             storeAccessTokenCookie(user.signInUserSession.accessToken.jwtToken)
                             dispatch(accessTokenMsg(user.signInUserSession.accessToken.jwtToken))
                         }, err => console.log(err))
-                        : null
+                        : command.request === 'save-question'
+                            ? disable('saving to dynamodb')(() => saveQuestionToDynamoDb(command.payload)(model).then(data => console.log(data), err => console.log(err)))
+                            : null
 }
 
 export default app
