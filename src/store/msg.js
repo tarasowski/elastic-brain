@@ -1,50 +1,65 @@
 import { MSGS } from '../Update'
-const showRepeatAnswerMsg = () => ({ type: MSGS.SHOW_REPEAT_ANSWER })
-const answerRepeatStatusMsg = status => ({ type: MSGS.ANSWER_REPEAT_STATUS, status })
-const nextRepeatQuestionMsg = () => ({ type: MSGS.NEXT_REPEAT_QUESTION })
+export const showRepeatAnswerMsg = () => ({ type: MSGS.SHOW_REPEAT_ANSWER })
+export const answerRepeatStatusMsg = status => ({ type: MSGS.ANSWER_REPEAT_STATUS, status })
+export const nextRepeatQuestionMsg = () => ({ type: MSGS.NEXT_REPEAT_QUESTION })
 
-const newAnswerMsg = value => ({
+export const newAnswerMsg = value => ({
     type: MSGS.NEW_ANSWER,
     value
 })
 
-const newQuestionMsg = value => {
+export const newQuestionMsg = value => {
     return {
         type: MSGS.NEW_QUESTION,
         value
     }
 }
 
-const nextQuestionMsg = () => {
+export const nextQuestionMsg = () => {
     return {
         type: MSGS.NEXT_QUESTION,
     }
 }
 
-const answerStatusMsg = status => {
+export const answerStatusMsg = status => {
     return {
         type: MSGS.ANSWER_STATUS,
         status
     }
 }
 
-const showAnswerMsg = () => {
+export const showAnswerMsg = () => {
     return {
         type: MSGS.SHOW_ANSWER
     }
 }
 
 
-const startQuizMsg = () => {
+export const startQuizMsg = () => {
     return {
         type: MSGS.START_QUIZ
     }
 }
 
-const saveNewQuestionMsg = () => ({ type: MSGS.SAVE_NEW_QUESTION })
+export const saveNewQuestionMsg = ({ newQuestion, newAnswer }) => ({ type: MSGS.SAVE_NEW_QUESTION, payload: { question: newQuestion, answer: newAnswer } })
 
-const startRepeatMsg = () => ({ type: MSGS.START_REPEAT })
+export const startRepeatMsg = () => ({ type: MSGS.START_REPEAT })
 
-const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
+export const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
 
-export { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg, newQuestionMsg, newAnswerMsg, saveNewQuestionMsg, startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg, changeUrlStateMsg }
+export const submitUsernameMsg = value => ({ type: MSGS.SUBMIT_USERNAME, value })
+export const submitUserPasswordMsg = value => ({ type: MSGS.SUBMIT_PASSWORD, value })
+export const submitUserEmailMsg = value => ({ type: MSGS.SUBMIT_EMAIL, value })
+export const submitUserPinMsg = value => ({ type: MSGS.SUBMIT_PIN, value })
+export const signupNewUserMsg = () => ({ type: MSGS.SIGN_UP })
+export const singupNewUserConfirmationMsg = () => ({ type: MSGS.SIGN_UP_CONFRIMATION })
+export const successSignUpMsg = msg => ({ type: MSGS.SUCCESS_SIGN_UP, msg })
+
+export const confirmSignUpMsg = () => ({ type: MSGS.CONFIRM_SIGN_UP })
+export const successConfirmationMsg = msg => ({ type: MSGS.SUCCESS_CONFIRMATION, msg })
+
+export const signInMsg = () => ({ type: MSGS.SIGN_IN })
+export const successSignInMsg = msg => ({ type: MSGS.SUCCESS_SIGN_IN, msg })
+export const accessTokenMsg = token => ({ type: MSGS.ACCESS_TOKEN, token })
+
+export const getAccessTokenMsg = token => ({ type: MSGS.GET_ACCESS_TOKEN, token })

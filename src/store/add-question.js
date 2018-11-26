@@ -17,15 +17,15 @@ const nextDateForRepetition = d =>
     d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
 
 
-const saveNewQuestion = model =>
-    ({
+const saveNewQuestion = payload => model =>
+    ([{
         ...model,
         newQuestion: '',
         newAnswer: '',
         newId: model.cards.length + 1,
         cards: [...model.cards, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }],
         repetition: [...model.repetition, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }]
-    })
+    }, { request: 'save-question', payload }])
 
 export { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion }
 
