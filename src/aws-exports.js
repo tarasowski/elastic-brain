@@ -1,4 +1,4 @@
-const awsconfig = {
+export const awsconfig = {
     Auth: {
         userPoolId: 'eu-west-1_Vl2lVYpPr',
         region: 'eu-west-1',
@@ -11,4 +11,3 @@ const awsconfig = {
 }
 
 
-export { awsconfig }

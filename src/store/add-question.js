@@ -13,6 +13,8 @@ const addNewAnswerToModel = msg => model =>
         newId: model.cards.length
     })
 
+export const addNewCategoryToModel = category => model => ({ ...model, newCategory: category, newId: model.cards.length })
+
 const nextDateForRepetition = d =>
     d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
 
@@ -22,16 +24,23 @@ const saveNewQuestion = payload => model =>
         ...model,
         newQuestion: '',
         newAnswer: '',
-        newId: model.cards.length + 1,
-        cards: [...model.cards, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }],
-        repetition: [...model.repetition, { id: model.newId, question: model.newQuestion, answer: model.newAnswer, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) }]
-    }, { request: 'save-question', payload }])
+        newCategory: '',
+    }, { request: 'save-question', payload: { ...payload, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) } }])
+
+export const addNewCardToCards = payload => model =>
+    ({
+        ...model,
+        numberOfCards: model.numberOfCards + 1,
+        cards: [...model.cards, { userId: payload.userId, date_category_id: payload.date_category_id, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }],
+        repetition: [...model.cards, { userId: payload.userId, date_category_id: payload.date_category_id, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }]
+    })
 
 export { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion }
 
 const initModelAddNewQuiz = {
     newQuestion: '',
     newAnswer: '',
+    newCategory: '',
     newId: 0,
 }
 

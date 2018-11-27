@@ -1,39 +1,16 @@
 import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion } from './store/repeat'
 import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './store/card'
-import { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion } from './store/add-question'
+import { addNewQuestionToModel, addNewAnswerToModel, addNewCategoryToModel, saveNewQuestion, addNewCardToCards } from './store/add-question'
 import { changeUrlState } from './store/router'
 import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken } from './store/auth'
 import { getAccessTokenMsg } from './store/msg';
+import { MSGS } from './store/msg'
+import { loadTodayCardsIntoModel, updateCardsOnload } from './store/init'
 
 
 
 
-export const MSGS = {
-    START_QUIZ: 'START_QUIZ',
-    SHOW_ANSWER: 'SHOW_ANSWER',
-    ANSWER_STATUS: 'ANSWER_STATUS',
-    NEXT_QUESTION: 'NEXT_QUESTION',
-    NEW_QUESTION: 'NEW_QUESTION',
-    NEW_ANSWER: 'NEW_ANSWER',
-    SAVE_NEW_QUESTION: 'SAVE_NEW_QUESTION',
-    START_REPEAT: 'START_REPEAT',
-    SHOW_REPEAT_ANSWER: 'SHOW_REPEAT_ANSWER',
-    ANSWER_REPEAT_STATUS: 'ANSER_REPEAT_STATUS',
-    NEXT_REPEAT_QUESTION: 'NEXT_REPEAT_QUESTION',
-    CHANGE_URL_STATE: 'CHANGE_URL_STATE',
-    SUBMIT_USERNAME: 'SUBMIT_USERNAME',
-    SUBMIT_PASSWORD: 'SUBMIT_PASSWORD',
-    SUBMIT_EMAIL: 'SUBMIT_EMAIL',
-    SIGN_UP: 'SIGN_UP',
-    SUBMIT_PIN: 'SUBMIT_PIN',
-    SIGN_UP_CONFIRMATION: 'SIGN_UP_CONFIRMATION',
-    SUCCESS_SIGN_UP: 'SUCCESS_SIGN_UP',
-    SUCCESS_CONFIRMATION: 'SUCCESS_CONFIRMATION',
-    CONFIRM_SIGN_UP: 'CONFRIM_SIGN_UP',
-    SIGN_IN: 'SIGN_IN',
-    SUCCESS_SIGN_IN: 'SUCCESS_SIGN_IN',
-    GET_ACCESS_TOKEN: 'GET_ACCESS_TOKEN'
-}
+
 
 
 const switchcase = cases => key => model =>
@@ -69,7 +46,10 @@ const update = (msg, model) =>
         [MSGS.SUCCESS_SIGN_IN]: () => successSignIn(msg.type)(model),
         [MSGS.ACCESS_TOKEN]: () => assignAccessToken(msg.token)(model),
         [MSGS.GET_ACCESS_TOKEN]: () => assignAccessToken(msg.token)(model),
-
+        [MSGS.SELECT_CATEGORY]: () => addNewCategoryToModel(msg.category)(model),
+        [MSGS.ADD_NEW_CARD_TO_CARDS]: () => addNewCardToCards(msg.payload)(model),
+        [MSGS.LOAD_TODAYS_CARDS]: () => loadTodayCardsIntoModel(model),
+        [MSGS.UPDATE_CARDS_ONLOAD]: () => updateCardsOnload(msg.payload)(model)
     })(msg.type)(model)
 
 

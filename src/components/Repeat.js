@@ -6,9 +6,10 @@ import { startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQ
 const { h1, div, p, button } = hh(h)
 
 const nextButton = className => model => onclick => {
-    return model.repetition.length >= model.nextRepeatId
-        ? button({ className, onclick }, 'Next')
-        : button({ className }, 'Start Over')
+    return model.repetition.length === model.nextRepeatId
+        ? button({ className }, 'Start Over')
+        : button({ className, onclick }, 'Next')
+
 }
 
 
