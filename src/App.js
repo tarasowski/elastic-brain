@@ -6,6 +6,7 @@ import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessToken
 import { saveQuestion } from './use-cases/add-question/io/graphql'
 import { loadCards } from './use-cases/initialization/io/graphql'
 import axios from 'axios'
+import { compose, propEq } from 'ramda-x'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
@@ -56,9 +57,12 @@ const signinAmp = username => password =>
 const storeAccessTokenCookie = jwt =>
     document.cookie = `accessToken=${jwt}`
 
-const updateCard = payload => model => {
-    console.log(payload)
-    return axios(awsconfig.GraphQL.endpoint,
+const head = x => x[0]
+const getAtt = id => data =>
+    data.filter(element = element.date_category_id === id)
+
+const updateCard = payload => model =>
+    axios(awsconfig.GraphQL.endpoint,
         {
             method: 'post',
             headers: {
@@ -69,11 +73,11 @@ const updateCard = payload => model => {
             mutation add {
                 updateQuestion(input: {
                     date_category_id: "${payload}"
-                    question: "${model.cards.filter(element => element.date_category_id === payload)[0].question}"
-                    answer: "${model.cards.filter(element => element.date_category_id === payload)[0].answer}"
-                    repeatNextDate: "${model.cards.filter(element => element.date_category_id === payload)[0].repeatNextDate}"
-                    category: "${model.cards.filter(element => element.date_category_id === payload)[0].category}"
-                    numberOfRepetitions: ${model.cards.filter(element => element.date_category_id === payload)[0].numberOfRepetitions}
+                    question: "${compose(propEq('question'), head, getAtt(payload))(model)}"
+                    answer: "${compose(propEq('answer'), head, getAtt(payload))(model)}"
+                    repeatNextDate: "${compose(propEq('repeatNextDate'), head, getAtt(payload))(model)}"
+                    category: "${compose(propEq('category'), head, getAtt(id))(model)}"
+                    numberOfRepetitions: ${compose(propEq('numberOfRepetitions'), head, getAtt(payload))(model)}
                   }) {
                   userId
                   date_category_id
@@ -86,7 +90,6 @@ const updateCard = payload => model => {
         `
             }
         })
-}
 
 const performIO = (dispatch, command, model) => {
     return command === null

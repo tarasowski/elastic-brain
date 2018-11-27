@@ -37,6 +37,7 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "aws-amplify": "^1.1.10",
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "ramda-x": "^1.0.5"
   }
 }
