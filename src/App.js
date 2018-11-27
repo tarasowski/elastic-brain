@@ -2,12 +2,15 @@ import { h, diff, patch } from 'virtual-dom'
 import createElement from 'virtual-dom/create-element'
 import { changeUrlStateMsg } from './Update';
 import Amplify, { Auth } from 'aws-amplify'
-import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg } from './store/msg'
+import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg } from './store/msg'
+import { saveQuestion } from './use-cases/add-question/io/graphql'
+import { loadCards } from './use-cases/initialization/io/graphql'
 import axios from 'axios'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
 import { awsconfig } from './aws-exports'
+import { loadTodayCardsIntoModel } from './store/init';
 Auth.configure(awsconfig)
 
 function app(initModel, update, view, node, routes) {
@@ -36,9 +39,10 @@ const singupAmp = username => password => email =>
         }
     })
 
-const changeBrowserUrl = url =>
+const changeBrowserUrl = url => model => dispatch =>
     new Promise((resolve, reject) => {
         history.pushState({ url: url }, null, url)
+        loadCards(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
         resolve('url changed')
     })
 
@@ -52,9 +56,8 @@ const signinAmp = username => password =>
 const storeAccessTokenCookie = jwt =>
     document.cookie = `accessToken=${jwt}`
 
-const saveQuestionToDynamoDb = payload => model => {
-    console.log(payload.question)
-    console.log(payload.answer)
+const updateCard = payload => model => {
+    console.log(payload)
     return axios(awsconfig.GraphQL.endpoint,
         {
             method: 'post',
@@ -63,15 +66,24 @@ const saveQuestionToDynamoDb = payload => model => {
             },
             data: {
                 query: `
-                mutation add {
-                    saveQuestion(question: "${payload.question}", answer: "${payload.answer}") {
-                      userId
-                      category
-                      question
-                      answer
-            }
-        }
-            `
+            mutation add {
+                updateQuestion(input: {
+                    date_category_id: "${payload}"
+                    question: "${model.cards.filter(element => element.date_category_id === payload)[0].question}"
+                    answer: "${model.cards.filter(element => element.date_category_id === payload)[0].answer}"
+                    repeatNextDate: "${model.cards.filter(element => element.date_category_id === payload)[0].repeatNextDate}"
+                    category: "${model.cards.filter(element => element.date_category_id === payload)[0].category}"
+                    numberOfRepetitions: ${model.cards.filter(element => element.date_category_id === payload)[0].numberOfRepetitions}
+                  }) {
+                  userId
+                  date_category_id
+                  question
+                  answer
+                  repeatNextDate
+                  numberOfRepetitions
+                }
+              }
+        `
             }
         })
 }
@@ -79,7 +91,7 @@ const saveQuestionToDynamoDb = payload => model => {
 const performIO = (dispatch, command, model) => {
     return command === null
         ? null
-        : command.url ? changeBrowserUrl(command.url)
+        : command.url ? changeBrowserUrl(command.url)(model)(dispatch)
             : command.request === 'signup'
                 ? singupAmp(model.user.username)(model.user.password)(model.user.email).then(data => dispatch(successSignUpMsg(data.type)), err => dispatch(failSignUpMsg(err)))
                 : command.request === 'confirmation'
@@ -90,8 +102,12 @@ const performIO = (dispatch, command, model) => {
                             dispatch(accessTokenMsg(user.signInUserSession.accessToken.jwtToken))
                         }, err => console.log(err))
                         : command.request === 'save-question'
-                            ? disable('saving to dynamodb')(() => saveQuestionToDynamoDb(command.payload)(model).then(data => console.log(data), err => console.log(err)))
-                            : null
+                            ? saveQuestion(command.payload)(model).then(data => dispatch(addNewCardToCardsMsg(data.data.data.saveQuestion)), err => console.log(err))
+                            : command.request === 'load-cards'
+                                ? loadCards(model).then(data => dispatch(updateCardsMsg(data)), err => console.log(err))
+                                : command.request = 'update-question'
+                                    ? updateCard(command.payload)(model).then(data => console.log(data), err => console.log(err))
+                                    : null
 }
 
 export default app

@@ -3,9 +3,9 @@ const startQuiz = model => (
         ...model,
         currQuestion: model.cards[0].question,
         currAnswer: model.cards[0].answer,
-        currId: model.cards[0].id,
+        //currId: model.cards[0].id,
         showAnswer: false,
-        nextId: model.cards[0].id + 1
+        nextId: model.nextId === 0 ? model.nextId + 1 : 1
     }
 )
 
@@ -34,7 +34,7 @@ const navigateToNextQuestion = model =>
             currAnswer: model.cards[model.nextId].answer,
             currId: model.cards[model.nextId].id,
             showAnswer: false,
-            nextId: model.cards[model.nextId].id + 1
+            nextId: model.nextId + 1
         }
         : {
             ...model

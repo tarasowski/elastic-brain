@@ -5,11 +5,12 @@ const checkForTodaysRepetitions = model =>
 const startRepeat = model =>
     ({
         ...model,
+        showRepeatAnswer: false,
         repetition: [...checkForTodaysRepetitions(model)],
         repeatQuestion: [...checkForTodaysRepetitions(model)][0].question,
         repeatAnswer: [...checkForTodaysRepetitions(model)][0].answer,
-        currRepeatId: [...checkForTodaysRepetitions(model)][0].id,
-        nextRepeatId: model.repetition.length
+        currRepeatId: [...checkForTodaysRepetitions(model)][0].date_category_id,
+        nextRepeatId: 0
     })
 
 const showRepeatAnswer = model => ({
@@ -22,26 +23,26 @@ const makeYMD = d =>
     d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
 
 const nextDateForRepetition = d => days =>
-    makeYMD(new Date(d.setDate(d.getDate() + Math.floor(Math.random() * ((days + 3) - days) + days))))
+    makeYMD(new Date(d.setDate(d.getDate() + Math.floor(Math.random() * ((days * days + 1) / 2) + days))))
 
 const updateNumberOfRepetitions = model =>
     model.cards.map(element => {
-        return element.id === model.currRepeatId
+        return element.date_category_id === model.currRepeatId
             ? {
                 ...element,
-                numberOfRepetitions: element.numberOfRepetitions === undefined ? 1 : element.numberOfRepetitions + 1,
-                repeatNextDate: element.numberOfRepetitions === undefined ? nextDateForRepetition(new Date())(2) : nextDateForRepetition(new Date())(element.numberOfRepetitions)
+                numberOfRepetitions: element.numberOfRepetitions === 0 ? 1 : element.numberOfRepetitions + 1,
+                repeatNextDate: element.numberOfRepetitions === 0 ? nextDateForRepetition(new Date())(1) : nextDateForRepetition(new Date())(element.numberOfRepetitions)
             }
             : element
     })
 
 const answerRepeatStatus = msg => model => {
     return msg.status === 'yes'
-        ? {
+        ? [{
             ...model,
             cards: updateNumberOfRepetitions(model),
-            repetition: model.repetition.filter(element => element.id !== model.currRepeatId)
-        }
+            repetition: model.repetition.filter(element => element.date_category_id !== model.currRepeatId)
+        }, { request: 'update-question', payload: model.currRepeatId }]
 
         : {
             ...model,
@@ -54,7 +55,8 @@ const nextRepeatQuestion = model => ({
     ...model,
     repeatQuestion: model.repetition[0].question,
     repeatAnswer: model.repetition[0].answer,
-    currRepeatId: model.repetition[0].id,
+    currRepeatId: model.repetition[0].date_category_id,
+    nextRepeatId: 0,
     showRepeatAnswer: false,
 })
 
