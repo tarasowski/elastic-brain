@@ -10,7 +10,7 @@ import {
     singupNewUserConfirmationMsg,
     confirmSignUpMsg,
     signInMsg
-} from '../store/msg'
+} from '../Update'
 
 const { div, label, input, button, h1, form } = hh(h)
 

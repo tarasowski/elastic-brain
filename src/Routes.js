@@ -1,7 +1,7 @@
 import homeView from './components/Home'
-import quizView from './components/AddQuestion'
+import quizView from './components/AddCard'
 import repeatView from './components/Repeat'
-import fullCardViewLearnMode from './components/Learn'
+import learnView from './components/Learn'
 import signupView from './components/Signup'
 
 
@@ -9,7 +9,7 @@ const routes = [
     { path: '/', component: homeView },
     { path: '/add-new', component: quizView },
     { path: '/repeat', component: repeatView },
-    { path: '/browse', component: fullCardViewLearnMode },
+    { path: '/learn', component: learnView },
 ]
 
 const getComponent = routes => routes.filter(element => element.path === (history.state && history.state.url))

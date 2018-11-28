@@ -1,7 +1,7 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
 
-import { getAccessTokenMsg, loadTodaysCardsIntoModelMsg } from './store/msg'
+import { getAccessTokenMsg, loadTodaysCardsIntoModelMsg } from './Update'
 
 const { body } = hh(h)
 

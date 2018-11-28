@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { newQuestionMsg, newAnswerMsg, saveNewQuestionMsg, selectCategoryMsg } from '../store/msg'
+import { newQuestionMsg, newAnswerMsg, saveNewQuestionMsg, selectCategoryMsg } from '../Update'
 
 const { h1, div, p, button, form, label, input, textarea, select, option } = hh(h)
 
