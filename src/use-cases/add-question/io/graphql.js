@@ -19,7 +19,7 @@ export const saveQuestion = payload => model =>
                       numberOfRepetitions: ${payload.numberOfRepetitions}
                     }) {
                       userId
-                      date_category_id
+                      userId_category_uuId
                       question
                       answer
                       repeatNextDate

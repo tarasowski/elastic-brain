@@ -5,7 +5,8 @@ import { changeUrlState } from './store/router'
 import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken } from './store/auth'
 import { getAccessTokenMsg } from './store/msg';
 import { MSGS } from './store/msg'
-import { loadTodayCardsIntoModel, updateCardsOnload } from './store/init'
+import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards } from './store/init'
+import { loadAllCards } from './use-cases/initialization/io/graphql';
 
 
 
@@ -49,7 +50,8 @@ const update = (msg, model) =>
         [MSGS.SELECT_CATEGORY]: () => addNewCategoryToModel(msg.category)(model),
         [MSGS.ADD_NEW_CARD_TO_CARDS]: () => addNewCardToCards(msg.payload)(model),
         [MSGS.LOAD_TODAYS_CARDS]: () => loadTodayCardsIntoModel(model),
-        [MSGS.UPDATE_CARDS_ONLOAD]: () => updateCardsOnload(msg.payload)(model)
+        [MSGS.UPDATE_CARDS_ONLOAD]: () => updateCardsOnload(msg.payload)(model),
+        [MSGS.LOAD_ALL_CARDS]: () => initLoadAllCards(msg.payload)(model)
     })(msg.type)(model)
 
 

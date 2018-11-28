@@ -31,8 +31,9 @@ export const addNewCardToCards = payload => model =>
     ({
         ...model,
         numberOfCards: model.numberOfCards + 1,
-        cards: [...model.cards, { userId: payload.userId, date_category_id: payload.date_category_id, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }],
-        repetition: [...model.cards, { userId: payload.userId, date_category_id: payload.date_category_id, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }]
+        numberOfRepetitionCards: model.numberOfRepetitionCards + 1,
+        cards: [...model.cards, { userId: payload.userId, userId_category_uuId: payload.userId_category_uuId, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }],
+        repetition: [{ userId: payload.userId, userId_category_uuId: payload.userId_category_uuId, question: payload.question, answer: payload.answer, repeatNextDate: payload.repeatNextDate, category: payload.category, numberOfRepetitions: payload.numberOfRepetitions }]
     })
 
 export { addNewQuestionToModel, addNewAnswerToModel, saveNewQuestion }

@@ -68,8 +68,10 @@ export const addNewCardToCardsMsg = payload => ({ type: MSGS.ADD_NEW_CARD_TO_CAR
 
 export const loadTodaysCardsIntoModelMsg = () => ({ type: MSGS.LOAD_TODAYS_CARDS })
 export const updateCardsOnloadMsg = payload => ({ type: MSGS.UPDATE_CARDS_ONLOAD, payload })
+export const loadAllCardsMsg = payload => ({ type: MSGS.LOAD_ALL_CARDS, payload })
 
 export const MSGS = {
+    LOAD_ALL_CARDS: 'LOAD_ALL_CARDS',
     UPDATE_CARDS_ONLOAD: 'UPDATE_CARDS_ONLOAD',
     LOAD_TODAYS_CARDS: 'LOAD_TODAYS_CARDS',
     START_QUIZ: 'START_QUIZ',

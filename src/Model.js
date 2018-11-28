@@ -15,6 +15,7 @@ const initModel = {
     user: { ...initModelAuth },
     numberOfCards: 0,
     cards: [],
+    numberOfRepetitionCards: 0,
     repetition: []
 }
 

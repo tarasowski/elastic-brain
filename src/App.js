@@ -2,11 +2,11 @@ import { h, diff, patch } from 'virtual-dom'
 import createElement from 'virtual-dom/create-element'
 import { changeUrlStateMsg } from './Update';
 import Amplify, { Auth } from 'aws-amplify'
-import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg } from './store/msg'
+import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg } from './store/msg'
 import { saveQuestion } from './use-cases/add-question/io/graphql'
-import { loadCards } from './use-cases/initialization/io/graphql'
+import { loadCards, loadAllCards } from './use-cases/initialization/io/graphql'
 import axios from 'axios'
-import { compose, propEq } from 'ramda-x'
+import { compose, prop } from 'ramda-x'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
@@ -40,10 +40,14 @@ const singupAmp = username => password => email =>
         }
     })
 
+
+
 const changeBrowserUrl = url => model => dispatch =>
     new Promise((resolve, reject) => {
         history.pushState({ url: url }, null, url)
-        loadCards(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
+        history.state && history.state.url === '/repeat'
+            ? loadCards(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
+            : loadAllCards(model).then(data => dispatch(loadAllCardsMsg(data)), err => console.log(err))
         resolve('url changed')
     })
 
@@ -59,7 +63,8 @@ const storeAccessTokenCookie = jwt =>
 
 const head = x => x[0]
 const getAtt = id => data =>
-    data.filter(element = element.date_category_id === id)
+    data.filter(element => element.userId_category_uuId === id)
+
 
 const updateCard = payload => model =>
     axios(awsconfig.GraphQL.endpoint,
@@ -72,15 +77,15 @@ const updateCard = payload => model =>
                 query: `
             mutation add {
                 updateQuestion(input: {
-                    date_category_id: "${payload}"
-                    question: "${compose(propEq('question'), head, getAtt(payload))(model)}"
-                    answer: "${compose(propEq('answer'), head, getAtt(payload))(model)}"
-                    repeatNextDate: "${compose(propEq('repeatNextDate'), head, getAtt(payload))(model)}"
-                    category: "${compose(propEq('category'), head, getAtt(id))(model)}"
-                    numberOfRepetitions: ${compose(propEq('numberOfRepetitions'), head, getAtt(payload))(model)}
+                    userId_category_uuId: "${payload}"
+                    question: "${compose(prop('question'), head, getAtt(payload))(model.cards)}"
+                    answer: "${compose(prop('answer'), head, getAtt(payload))(model.cards)}"
+                    repeatNextDate: "${compose(prop('repeatNextDate'), head, getAtt(payload))(model.cards)}"
+                    category: "${compose(prop('category'), head, getAtt(payload))(model.cards)}"
+                    numberOfRepetitions: ${compose(prop('numberOfRepetitions'), head, getAtt(payload))(model.cards)}
                   }) {
                   userId
-                  date_category_id
+                  userId_category_uuId
                   question
                   answer
                   repeatNextDate
@@ -90,6 +95,7 @@ const updateCard = payload => model =>
         `
             }
         })
+
 
 const performIO = (dispatch, command, model) => {
     return command === null
@@ -106,11 +112,11 @@ const performIO = (dispatch, command, model) => {
                         }, err => console.log(err))
                         : command.request === 'save-question'
                             ? saveQuestion(command.payload)(model).then(data => dispatch(addNewCardToCardsMsg(data.data.data.saveQuestion)), err => console.log(err))
-                            : command.request === 'load-cards'
-                                ? loadCards(model).then(data => dispatch(updateCardsMsg(data)), err => console.log(err))
-                                : command.request = 'update-question'
-                                    ? updateCard(command.payload)(model).then(data => console.log(data), err => console.log(err))
-                                    : null
+                            // : command.request === 'load-cards'
+                            //     ? loadCards(model).then(data => dispatch(updateCardsMsg(data)), err => console.log(err))
+                            : command.request = 'update-question'
+                                ? updateCard(command.payload)(model).then(data => console.log(data), err => console.log(err))
+                                : null
 }
 
 export default app

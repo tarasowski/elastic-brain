@@ -9,7 +9,7 @@ const startRepeat = model =>
         repetition: [...checkForTodaysRepetitions(model)],
         repeatQuestion: [...checkForTodaysRepetitions(model)][0].question,
         repeatAnswer: [...checkForTodaysRepetitions(model)][0].answer,
-        currRepeatId: [...checkForTodaysRepetitions(model)][0].date_category_id,
+        currRepeatId: [...checkForTodaysRepetitions(model)][0].userId_category_uuId,
         nextRepeatId: 0
     })
 
@@ -27,7 +27,7 @@ const nextDateForRepetition = d => days =>
 
 const updateNumberOfRepetitions = model =>
     model.cards.map(element => {
-        return element.date_category_id === model.currRepeatId
+        return element.userId_category_uuId === model.currRepeatId
             ? {
                 ...element,
                 numberOfRepetitions: element.numberOfRepetitions === 0 ? 1 : element.numberOfRepetitions + 1,
@@ -40,8 +40,12 @@ const answerRepeatStatus = msg => model => {
     return msg.status === 'yes'
         ? [{
             ...model,
+            repeatQuestion: '',
+            repeatAnswer: '',
+            currRepeatId: '',
             cards: updateNumberOfRepetitions(model),
-            repetition: model.repetition.filter(element => element.date_category_id !== model.currRepeatId)
+            numberOfRepetitionCards: model.numberOfRepetitionCards - 1,
+            repetition: model.repetition.filter(element => element.userId_category_uuId !== model.currRepeatId)
         }, { request: 'update-question', payload: model.currRepeatId }]
 
         : {
@@ -55,7 +59,7 @@ const nextRepeatQuestion = model => ({
     ...model,
     repeatQuestion: model.repetition[0].question,
     repeatAnswer: model.repetition[0].answer,
-    currRepeatId: model.repetition[0].date_category_id,
+    currRepeatId: model.repetition[0].userId_category_uuId,
     nextRepeatId: 0,
     showRepeatAnswer: false,
 })
