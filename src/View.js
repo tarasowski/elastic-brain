@@ -13,8 +13,8 @@ function view(dispatch, model, routes) {
         init(dispatch),
         navigation(dispatch),
         model.user.accessToken === ''
-            ? signupView(dispatch, model)
-            : routes(dispatch, model),
+            ? signupView(dispatch)(model)
+            : routes(dispatch)(model),
         pre({ className: '' }, JSON.stringify(model, null, 4))
     ])
 }

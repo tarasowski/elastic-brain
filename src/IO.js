@@ -2,7 +2,7 @@ import { compose, prop } from 'ramda-x'
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 import { awsconfig } from './aws-exports'
-import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg } from './Update'
+import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg, updateCourseListMsg } from './Update'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
@@ -21,8 +21,6 @@ export const storeAccessTokenCookie = jwt =>
     document.cookie = `accessToken=${jwt}`
 
 
-
-
 export const confirmSignUp = username => code =>
     Auth.confirmSignUp(username, code)
 
@@ -37,16 +35,43 @@ export const changeBrowserUrl = url => model => dispatch =>
         history.state && history.state.url === '/repeat'
             ? loadCards(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
             : loadAllCards(model).then(data => dispatch(loadAllCardsMsg(data)), err => console.log(err))
+        history.state && history.state.url === '/'
+            ? getAllCourses(model).then(data => dispatch(updateCourseListMsg(getMyCoursesList(data))), err => console.log(err))
+            : null
         resolve('url changed')
     })
 
-
 const head = x => x[0]
+const getMyCoursesList = compose(prop('courses'), head, prop('items'), prop('getAllCourses'), prop('data'), prop('data'))
+
 const getAtt = id => data =>
     data.filter(element => element.userId_category_uuId === id)
 
 
 /* GraphQL queries and mutations from here */
+
+const getAllCourses = model =>
+    axios(awsconfig.GraphQL.endpoint,
+        {
+            method: 'post',
+            headers: {
+                Authorization: model.user.accessToken
+            },
+            data: {
+                query: `
+                query getCourses {
+                    getAllCourses {
+                      items {
+                        userId
+                        courses
+                      }
+                      nextToken
+                    }
+                  }
+            `
+            }
+        })
+
 
 const updateCard = payload => model =>
     axios(awsconfig.GraphQL.endpoint,
@@ -136,8 +161,8 @@ const loadAllCards = model => {
 }
 
 
-const loadCards = model => {
-    return axios(awsconfig.GraphQL.endpoint,
+const loadCards = model =>
+    axios(awsconfig.GraphQL.endpoint,
         {
             method: 'post',
             headers: {
@@ -162,11 +187,31 @@ const loadCards = model => {
                 `
             }
         })
-}
 
 
+export const addNewCourseToDb = payload => model =>
+    axios(awsconfig.GraphQL.endpoint,
+        {
+            method: 'post',
+            headers: {
+                Authorization: model.user.accessToken
+            },
+            data: {
+                query: `
+                mutation addCourse {
+                    addNewCourse(name: "${payload}") {
+                      userId
+                      courses
+                    }
+                  }
+                  
+            `
+            }
+        })
 
 /* The main IO control flow function */
+
+const getCoursesList = compose(prop('courses'), prop('addNewCourse'), prop('data'), prop('data'))
 
 export const performIO = (dispatch, command, model) => {
     return command === null
@@ -183,7 +228,9 @@ export const performIO = (dispatch, command, model) => {
                         }, err => console.log(err))
                         : command.request === 'save-question'
                             ? saveQuestion(command.payload)(model).then(data => dispatch(addNewCardToCardsMsg(data.data.data.saveQuestion)), err => console.log(err))
-                            : command.request = 'update-question'
+                            : command.request === 'update-question'
                                 ? updateCard(command.payload)(model).then(data => console.log(data), err => console.log(err))
-                                : null
+                                : command.request === 'add-course'
+                                    ? addNewCourseToDb(command.payload)(model).then(data => dispatch(updateCourseListMsg(getCoursesList(data))), err => console.log(err))
+                                    : null
 }
