@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg } from '../store/msg'
+import { startRepeatMsg, showRepeatAnswerMsg, answerRepeatStatusMsg, nextRepeatQuestionMsg } from '../Update'
 
 
 const { h1, div, p, button } = hh(h)
@@ -32,7 +32,7 @@ const questionView = className => model =>
 
 function repeatView(dispatch, model) {
     return div({ className: 'container mx-auto border p-8 mb-8' }, [
-        h1({ className: 'my-8' }, 'Learn Cards'),
+        h1({ className: 'my-8' }, 'Repeat Cards'),
         questionView('mb-4')(model),
         answerView('mb-4')(model),
         repeatButton('border border-grey text-white font-bold py-2 px-2 rounded bg-grey hover:bg-grey-dark mr-4')(model)(() => dispatch(startRepeatMsg())),
