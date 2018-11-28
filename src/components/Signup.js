@@ -71,16 +71,12 @@ const loginForm = dispatch => model =>
         ])
     ])
 
-const signupView = (dispatch, model) =>
+const signupView = dispatch => model =>
     div({}, [
         signUpForm(dispatch)(model),
         confirmationForm(dispatch)(model),
         loginForm(dispatch)(model),
     ])
-
-
-
-
 
 
 export default signupView

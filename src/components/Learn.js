@@ -22,7 +22,7 @@ const questionView = className => model =>
     p({ className }, model.currQuestion)
 
 
-function fullCardViewLearnMode(dispatch, model) {
+const fullCardViewLearnMode = dispatch => model => {
     return div({ className: 'container mx-auto border p-10' }, [
         h1({ className: 'my-8' }, 'Learn Cards'),
         questionView('mb-4')(model),

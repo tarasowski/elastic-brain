@@ -4,7 +4,7 @@ import { changeUrlStateMsg } from '../Update'
 
 const { div, button } = hh(h)
 
-const navigation = (dispatch) =>
+const navigation = dispatch =>
     div({}, [
         button({
             className: 'border p-8 m-8', onclick: () => {
@@ -15,7 +15,12 @@ const navigation = (dispatch) =>
             className: 'border p-8 m-8', onclick: () => {
                 dispatch(changeUrlStateMsg('/add-new'))
             }
-        }, 'Add New Question'),
+        }, 'Add New Card'),
+        button({
+            className: 'border p-8 m-8', onclick: () => {
+                dispatch(changeUrlStateMsg('/course'))
+            }
+        }, 'Course'),
         button({
             className: 'border p-8 m-8', onclick: () => {
                 dispatch(changeUrlStateMsg('/learn'))

@@ -1,7 +1,8 @@
-import initModelCard from './store/card'
+import initModelCard from './store/learn'
 import initModelAddNewQuiz from './store/add-question'
 import initModelRepeatCards from './store/repeat'
 import { initModelAuth } from './store/auth'
+import { initModelCourses } from './store/courses'
 
 const makeYMD = d =>
     d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
@@ -9,6 +10,7 @@ const makeYMD = d =>
 
 const initModel = {
     ...initModelCard,
+    courses: { ...initModelCourses },
     ...initModelAddNewQuiz,
     ...initModelRepeatCards,
     today: makeYMD(new Date()),
