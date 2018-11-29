@@ -16,6 +16,9 @@ const initModel = {
     today: makeYMD(new Date()),
     user: { ...initModelAuth },
     numberOfCards: 0,
+    activeCategory: 'all',
+    categoryView: false,
+    activeCards: [],
     cards: [],
     numberOfRepetitionCards: 0,
     repetition: []

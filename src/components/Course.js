@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { newCourseNameMsg, addNewCourseMsg } from '../Update'
+import { newCourseNameMsg, addNewCourseMsg, filterCategoryMsg } from '../Update'
 import { compose, prop, map, trace } from 'ramda-x'
 
 const { div, h1, ul, li, a, button, input } = hh(h)
@@ -17,7 +17,7 @@ const course = className => onclick => value =>
 export const courseList = className => dispatch => model =>
     ul({ className },
         compose(
-            map(course('text-blue hover: text-blue-dark hover:underline')(() => console.log('button'))),
+            map(course('text-blue hover: text-blue-dark hover:underline')(e => dispatch(filterCategoryMsg(e.target.innerText)))),
             prop('courseList'),
             prop('courses')
         )(model)
