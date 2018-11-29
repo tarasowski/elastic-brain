@@ -3,9 +3,9 @@ import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from '
 import { addNewQuestionToModel, addNewAnswerToModel, addNewCategoryToModel, saveNewQuestion, addNewCardToCards } from './store/add-question'
 import { changeUrlState } from './store/router'
 import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken } from './store/auth'
-import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards, loadInitState } from './store/init'
+import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards, loadInitState, resetViews } from './store/init'
 import { addNewCourse, addNewCourseName, updateCourseList } from './store/courses'
-import { filterCategory } from './store/filter'
+import { filterCategory, filterCategoryRepetition } from './store/filter'
 
 const MSGS = {
     LOAD_ALL_CARDS: 'LOAD_ALL_CARDS',
@@ -42,6 +42,8 @@ const MSGS = {
     UPDATE_COURSE_LIST: 'UPDATE_COURSE_LIST',
     LOAD_INIT_STATE: 'MSGS.LOAD_INIT_STATE',
     FILTER_CATEGORY: 'FILTER_CATEGORY',
+    FiLTER_CATEGORY_REPETITION: 'FILTER_CATEGORY_REPETITION',
+    RESET_VIEWS: 'RESET_VIEWS',
 }
 
 export const showRepeatAnswerMsg = () => ({ type: MSGS.SHOW_REPEAT_ANSWER })
@@ -79,6 +81,8 @@ export const newCourseNameMsg = value => ({ type: MSGS.NEW_COURSE_NAME, value })
 export const updateCourseListMsg = list => ({ type: MSGS.UPDATE_COURSE_LIST, list })
 export const loadInitStateMsg = () => ({ type: MSGS.LOAD_INIT_STATE })
 export const filterCategoryMsg = categoryName => ({ type: MSGS.FILTER_CATEGORY, categoryName })
+export const filterCategoryRepetitionMsg = categoryName => ({ type: MSGS.FiLTER_CATEGORY_REPETITION, categoryName })
+export const resetViewsMsg = () => ({ type: MSGS.RESET_VIEWS })
 
 
 const switchcase = cases => key => model =>
@@ -124,6 +128,8 @@ const update = (msg, model) =>
         [MSGS.UPDATE_COURSE_LIST]: () => updateCourseList(msg.list)(model),
         [MSGS.LOAD_INIT_STATE]: () => loadInitState(model),
         [MSGS.FILTER_CATEGORY]: () => filterCategory(msg.categoryName)(model),
+        [MSGS.FiLTER_CATEGORY_REPETITION]: () => filterCategoryRepetition(msg.categoryName)(model),
+        [MSGS.RESET_VIEWS]: () => resetViews(model)
     })(msg.type)(model)
 
 

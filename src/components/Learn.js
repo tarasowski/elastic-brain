@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg } from '../Update'
+import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg, filterCategoryMsg } from '../Update'
 import { courseList } from './Course'
 import { prop, compose } from 'ramda-x'
 
@@ -45,10 +45,6 @@ const buttonSet = className => dispatch => model =>
                 ])
 
 
-
-
-
-
 const length = data => data.length
 const progress = model => [prop('nextId', model), compose(length, prop('activeCards'))(model)].reduce((acc, val) => acc / val * 100)
 const activeCardsLength = compose(length, prop('activeCards'))
@@ -73,7 +69,7 @@ const categoryView = className => dispatch => model =>
             buttonSet('')(dispatch)(model)
         ])
         : div({ className }, [
-            courseList('text-blue')(dispatch)(model)
+            courseList(filterCategoryMsg)(dispatch)(model)
         ])
 
 

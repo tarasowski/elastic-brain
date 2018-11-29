@@ -2,7 +2,7 @@ import { compose, prop } from 'ramda-x'
 import { Auth } from 'aws-amplify'
 import { awsconfig, endpoint } from './aws-exports'
 import { loadCards, getAllCourses, updateCard, saveQuestion, loadAllCards, addNewCourseToDb, query, mutation } from './graphql/queries'
-import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg, updateCourseListMsg } from './Update'
+import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg, updateCourseListMsg, resetViewsMsg } from './Update'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
@@ -32,6 +32,7 @@ export const signinAmp = username => password =>
 export const changeBrowserUrl = url => model => dispatch =>
     new Promise((resolve, reject) => {
         history.pushState({ url: url }, null, url)
+        dispatch(resetViewsMsg())
         query(loadCards)('')(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
         query(loadAllCards)('')(model).then(data => dispatch(loadAllCardsMsg(data)), err => console.log(err))
         query(getAllCourses)('')(model).then(data => dispatch(updateCourseListMsg(getMyCoursesList(data))), err => console.log(err))

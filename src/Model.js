@@ -21,7 +21,10 @@ const initModel = {
     activeCards: [],
     cards: [],
     numberOfRepetitionCards: 0,
-    repetition: []
+    repetition: [],
+    activeRepetitionCards: [],
+    activeRepetitionCategory: 'all',
+    categoryRepetitionView: false,
 }
 
 export default initModel
