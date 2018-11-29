@@ -14,7 +14,7 @@ const head = x => x[0]
 const course = className => onclick => value =>
     li({}, button({ className, onclick }, value))
 
-const courseList = className => dispatch => model =>
+export const courseList = className => dispatch => model =>
     ul({ className },
         compose(
             map(course('text-blue hover: text-blue-dark hover:underline')(() => console.log('button'))),

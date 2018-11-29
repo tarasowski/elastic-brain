@@ -1,7 +1,7 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
 
-import { getAccessTokenMsg, loadTodaysCardsIntoModelMsg } from './Update'
+import { getAccessTokenMsg, loadInitStateMsg } from './Update'
 
 const { body } = hh(h)
 
@@ -11,7 +11,10 @@ const getTokenFromCookie = () =>
 
 export const init = dispatch =>
     body({
-        onload: () => dispatch(getAccessTokenMsg(getTokenFromCookie()))
+        onload: () => {
+            dispatch(getAccessTokenMsg(getTokenFromCookie()))
+            dispatch(loadInitStateMsg())
+        }
     }, [
 
         ])    

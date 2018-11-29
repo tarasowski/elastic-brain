@@ -23,6 +23,6 @@ const head = x => x[0]
 const first = compose(prop('component'), head, getComponent)
 
 const router = dispatch => model =>
-    getComponent(routes).length === 1 ? first(routes)(dispatch)(model) : devSwitch(courseView)(dispatch)(model)
+    getComponent(routes).length === 1 ? first(routes)(dispatch)(model) : devSwitch(learnView)(dispatch)(model)
 
 export default router

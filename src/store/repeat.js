@@ -1,5 +1,5 @@
 const checkForTodaysRepetitions = model =>
-    model.cards.filter(({ repeatNextDate }) => repeatNextDate === makeYMD(new Date()))
+    model.repetition.filter(({ repeatNextDate }) => repeatNextDate === makeYMD(new Date()))
 
 
 const startRepeat = model =>

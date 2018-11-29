@@ -11,3 +11,7 @@ export const initLoadAllCards = payload => model =>
     model.numberOfCards < payload.data.data.getAllCards.questions.length
         ? { ...model, numberOfCards: payload.data.data.getAllCards.questions.length, cards: [...model.cards, ...payload.data.data.getAllCards.questions] }
         : { ...model }
+
+export const loadInitState = model =>
+    ([{ ...model }, { request: 'load-state' }])
+

@@ -3,7 +3,7 @@ import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from '
 import { addNewQuestionToModel, addNewAnswerToModel, addNewCategoryToModel, saveNewQuestion, addNewCardToCards } from './store/add-question'
 import { changeUrlState } from './store/router'
 import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken } from './store/auth'
-import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards } from './store/init'
+import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards, loadInitState } from './store/init'
 import { addNewCourse, addNewCourseName, updateCourseList } from './store/courses'
 
 const MSGS = {
@@ -38,7 +38,8 @@ const MSGS = {
     ADD_NEW_CARD_TO_CARDS: 'ADD_NEW_CARD_TO_CARDS',
     ADD_NEW_COURSE: 'ADD_NEW_COURSE',
     NEW_COURSE_NAME: 'NEW_COURSE_NAME',
-    UPDATE_COURSE_LIST: 'UPDATE_COURSE_LIST'
+    UPDATE_COURSE_LIST: 'UPDATE_COURSE_LIST',
+    LOAD_INIT_STATE: 'MSGS.LOAD_INIT_STATE'
 }
 
 export const showRepeatAnswerMsg = () => ({ type: MSGS.SHOW_REPEAT_ANSWER })
@@ -50,7 +51,7 @@ export const nextQuestionMsg = () => ({ type: MSGS.NEXT_QUESTION })
 export const answerStatusMsg = status => ({ type: MSGS.ANSWER_STATUS, status })
 export const showAnswerMsg = () => ({ type: MSGS.SHOW_ANSWER })
 export const startQuizMsg = () => ({ type: MSGS.START_QUIZ })
-export const saveNewQuestionMsg = ({ newQuestion, newAnswer, newCategory }) => ({ type: MSGS.SAVE_NEW_QUESTION, payload: { question: newQuestion, answer: newAnswer, category: newCategory } })
+export const saveNewQuestionMsg = () => ({ type: MSGS.SAVE_NEW_QUESTION })
 export const startRepeatMsg = () => ({ type: MSGS.START_REPEAT })
 export const changeUrlStateMsg = url => ({ type: MSGS.CHANGE_URL_STATE, url })
 export const submitUsernameMsg = value => ({ type: MSGS.SUBMIT_USERNAME, value })
@@ -74,6 +75,7 @@ export const loadAllCardsMsg = payload => ({ type: MSGS.LOAD_ALL_CARDS, payload 
 export const addNewCourseMsg = value => ({ type: MSGS.ADD_NEW_COURSE })
 export const newCourseNameMsg = value => ({ type: MSGS.NEW_COURSE_NAME, value })
 export const updateCourseListMsg = list => ({ type: MSGS.UPDATE_COURSE_LIST, list })
+export const loadInitStateMsg = () => ({ type: MSGS.LOAD_INIT_STATE })
 
 
 const switchcase = cases => key => model =>
@@ -116,7 +118,8 @@ const update = (msg, model) =>
         [MSGS.LOAD_ALL_CARDS]: () => initLoadAllCards(msg.payload)(model),
         [MSGS.ADD_NEW_COURSE]: () => addNewCourse(model),
         [MSGS.NEW_COURSE_NAME]: () => addNewCourseName(msg.value)(model),
-        [MSGS.UPDATE_COURSE_LIST]: () => updateCourseList(msg.list)(model)
+        [MSGS.UPDATE_COURSE_LIST]: () => updateCourseList(msg.list)(model),
+        [MSGS.LOAD_INIT_STATE]: () => loadInitState(model),
     })(msg.type)(model)
 
 
