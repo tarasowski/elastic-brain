@@ -35,7 +35,7 @@ const quizView = dispatch => model => {
         dropDownSet((e) => dispatch(selectCategoryMsg(e.target.value)))(model),
         button({
             className: 'broder border-blue rounded bg-blue-dark text-white text-2xl my-4 p-2',
-            onclick: () => dispatch(saveNewQuestionMsg(model))
+            onclick: () => dispatch(saveNewQuestionMsg())
         }, 'Save')
     ])
 }

@@ -1,5 +1,5 @@
 const checkForTodaysRepetitions = model =>
-    model.cards.filter(({ repeatNextDate }) => repeatNextDate === makeYMD(new Date()))
+    model.repetition.filter(({ repeatNextDate }) => repeatNextDate === makeYMD(new Date()))
 
 
 const startRepeat = model =>
@@ -45,7 +45,9 @@ const answerRepeatStatus = msg => model => {
             currRepeatId: '',
             cards: updateNumberOfRepetitions(model),
             numberOfRepetitionCards: model.numberOfRepetitionCards - 1,
-            repetition: model.repetition.filter(element => element.userId_category_uuId !== model.currRepeatId)
+            repetition: model.repetition.filter(element => element.userId_category_uuId !== model.currRepeatId),
+            activeRepetitionCards: model.repetition.filter(element => element.userId_category_uuId !== model.currRepeatId),
+            showRepeatAnswer: false,
         }, { request: 'update-question', payload: model.currRepeatId }]
 
         : {

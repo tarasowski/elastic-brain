@@ -25,7 +25,7 @@ const saveNewQuestion = payload => model =>
         newQuestion: '',
         newAnswer: '',
         newCategory: '',
-    }, { request: 'save-question', payload: { ...payload, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) } }])
+    }, { request: 'save-question', payload: { ...model, numberOfRepetitions: 0, repeatNextDate: nextDateForRepetition(new Date()) } }])
 
 export const addNewCardToCards = payload => model =>
     ({

@@ -10,4 +10,6 @@ export const awsconfig = {
 
 }
 
+export const endpoint = 'https://lbsvx36gwzfpjplaybywsvez6u.appsync-api.eu-west-1.amazonaws.com/graphql'
+
 
