@@ -74,7 +74,7 @@ const categoryView = className => dispatch => model =>
 
 
 const repeatView = dispatch => model => {
-    return div({ className: 'container mx-auto border p-8 mb-8' }, [
+    return div({ className: 'container mx-auto py-8 mb-8' }, [
         h1({ className: 'my-8' }, 'Repeat Cards'),
         categoryView('')(dispatch)(model)
     ])

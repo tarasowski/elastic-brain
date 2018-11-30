@@ -1,12 +1,15 @@
 import { h, diff, patch } from 'virtual-dom'
 import createElement from 'virtual-dom/create-element'
-import { performIO } from './IO'
+import { performIO, getTokenFromCookie } from './IO'
+import { getAccessTokenMsg, loadInitStateMsg } from './Update'
 
 function app(initModel, update, view, node, routes) {
     let model = initModel
     let currentView = view(dispatch, model, routes)
     let rootNode = createElement(currentView)
     node.appendChild(rootNode)
+    dispatch(getAccessTokenMsg(getTokenFromCookie()))
+    dispatch(loadInitStateMsg())
 
     function dispatch(msg) {
         const updates = update(msg, model)

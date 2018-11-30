@@ -28,7 +28,7 @@ const dropDownSet = onchange => model =>
     ])
 
 const quizView = dispatch => model => {
-    return div({ className: 'container border mx-auto p-8 mb-10d' }, [
+    return div({ className: 'container mx-auto py-8 mb-10d' }, [
         h1({}, 'Add New Card'),
         inputSet('Question', model.newQuestion)(e => dispatch(newQuestionMsg(e.target.value))),
         inputSet('Answer', model.newAnswer)(e => dispatch(newAnswerMsg(e.target.value))),
