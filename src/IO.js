@@ -2,7 +2,7 @@ import { compose, prop } from 'ramda-x'
 import { Auth } from 'aws-amplify'
 import { awsconfig, endpoint } from './aws-exports'
 import { loadCards, getAllCourses, updateCard, saveQuestion, loadAllCards, addNewCourseToDb, query, mutation } from './graphql/queries'
-import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg, updateCourseListMsg, resetViewsMsg } from './Update'
+import { successSignUpMsg, successConfirmationMsg, successSignInMsg, accessTokenMsg, addNewCardToCardsMsg, updateCardsOnloadMsg, loadAllCardsMsg, updateCourseListMsg, resetViewsMsg, getAccessTokenMsg } from './Update'
 
 const disable = msg => fn => console.log('feature is currently disabled: ' + msg)
 
@@ -39,6 +39,10 @@ export const changeBrowserUrl = url => model => dispatch =>
         resolve('url changed')
     })
 
+export const getTokenFromCookie = () =>
+    document.cookie.slice(12)
+
+
 export const loadInitStateIO = dispatch => model => {
     query(loadCards)('')(model).then(data => dispatch(updateCardsOnloadMsg(data)), err => console.log(err))
     query(loadAllCards)('')(model).then(data => dispatch(loadAllCardsMsg(data)), err => console.log(err))
@@ -55,7 +59,7 @@ export const performIO = (dispatch, command, model) => {
         ? null
         : command.url ? changeBrowserUrl(command.url)(model)(dispatch)
             : command.request === 'signup'
-                ? singupAmp(model.user.username)(model.user.password)(model.user.email).then(data => dispatch(successSignUpMsg(data.type)), err => dispatch(failSignUpMsg(err)))
+                ? singupAmp(model.user.username)(model.user.password)(model.user.email).then(data => dispatch(successSignUpMsg(data.type)), err => dispatch(console.log(err)))
                 : command.request === 'confirmation'
                     ? confirmSignUp(model.user.username)(model.user.pin).then(data => dispatch(successConfirmationMsg(data.type)), err => dispatch(failedConfirmationMsg(err)))
                     : command.request === 'signin'

@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers'
 import { h } from 'virtual-dom'
-import { startQuizMsg, showAnswerMsg, answerStatusMsg, nextQuestionMsg, filterCategoryMsg } from '../Update'
+import { startQuizMsg, showAnswerMsg, nextQuestionMsg, filterCategoryMsg } from '../actions/learn'
 import { courseList } from './Course'
 import { prop, compose } from 'ramda-x'
 
@@ -17,31 +17,36 @@ const createButton = className => value => onclick =>
 
 const answerView = className => model =>
     model.showAnswer === false
-        ? ''
-        : p({ className }, `Answer: ${model.currAnswer}`)
+        ? div({ className: 'h-64' })
+        : div({ className: 'h-64' }, [
+            span({ className: 'font-bold text-2xl mb-4' }, 'Answer: '),
+            p({ className: 'mt-4 text-2xl' }, `${model.currAnswer}`)
+        ])
 
 const questionView = className => model =>
     model.currQuestion === ''
-        ? p({})
-        : p({ className }, `Question: ${model.currQuestion}`)
+        ? div({ className: 'h-64' })
+        : div({ className: 'h-64' }, [
+            span({ className: 'font-bold text-2xl mb-4' }, 'Question: '),
+            p({ className: 'mt-4 text-2xl' }, `${model.currQuestion}`)
+        ])
 
 const buttonSet = className => dispatch => model =>
     prop('nextId', model) === 0
-        ? div({ className }, [
-            p({ className: 'py-8' }, 'Click start to start learning your cards'),
-            createButton('border border-grey text-white font-bold py-2 px-2 rounded bg-grey hover:bg-grey-dark mr-4')('Start')(() => dispatch(startQuizMsg())),
+        ? div({ className: '' }, [
+            createButton('border border-grey text-white font-bold py-6 px-6 w-48 rounded bg-grey hover:bg-grey-dark mr-4 uppercase')('Start Now')(() => dispatch(startQuizMsg())),
         ])
         : prop('showAnswer', model)
             ? div({}, [
-                nextButton('border border-orange text-white font-bold py-2 px-2 rounded bg-orange hover:bg-orange-dark')(model)(() => dispatch(nextQuestionMsg())),
+                nextButton('border border-orange text-white font-bold py-6 px-6 w-48 rounded bg-orange hover:bg-orange-dark uppercase')(model)(() => dispatch(nextQuestionMsg())),
             ])
             : prop('showAnswer', model) === false
                 ? div({}, [
-                    createButton('border border-blue text-white font-bold py-2 px-2 rounded bg-blue hover:bg-blue-dark mr-4')('Show answer')(() => dispatch(showAnswerMsg())),
+                    createButton('border border-blue text-white font-bold py-6 px-6 w-48 rounded bg-blue hover:bg-blue-dark mr-4 uppercase')('Show answer')(() => dispatch(showAnswerMsg())),
                 ])
                 : div({}, [
-                    createButton('border border-blue text-white font-bold py-2 px-2 rounded bg-blue hover:bg-blue-dark mr-4')('Show answer')(() => dispatch(showAnswerMsg())),
-                    nextButton('border border-orange text-white font-bold py-2 px-2 rounded bg-orange hover:bg-orange-dark')(model)(() => dispatch(nextQuestionMsg())),
+                    createButton('border border-blue text-white font-bold py-6 px-6 w-48 rounded bg-blue hover:bg-blue-dark mr-4')('Show answer')(() => dispatch(showAnswerMsg())),
+                    nextButton('border border-orange text-white font-bold py-6 px-6 w-48 rounded bg-orange hover:bg-orange-dark')(model)(() => dispatch(nextQuestionMsg())),
                 ])
 
 
@@ -51,22 +56,22 @@ const activeCardsLength = compose(length, prop('activeCards'))
 
 const counter = className => model =>
     div({ className }, [
-        div({ className: 'progressbar bg-blue mb-2', style: `width:${progress(model)}%; height: 2rem` }),
+        div({ className: 'progressbar bg-grey-light border-grey mb-2', style: `width:${progress(model)}%; height: 2rem` }),
         span({}, 'You are at '),
         span({}, prop('nextId', model)),
         span({}, ' of '),
         span({}, activeCardsLength(model)),
-        span({}, ' total cards')
+        span({}, ' total cards in category: '),
+        span({}, model.activeCategory)
     ])
 
 const categoryView = className => dispatch => model =>
     prop('categoryView', model)
-        ? div({ className }, [
-            h2({ className: 'py-8' }, `Category: ${prop('activeCategory', model)}`),
-            counter('py-4 border-b border-blue mb-4')(model),
-            questionView('mb-4')(model),
-            answerView('mb-4')(model),
-            buttonSet('')(dispatch)(model)
+        ? div({ className: 'h-screen' }, [
+            questionView('')(model),
+            answerView('')(model),
+            buttonSet('')(dispatch)(model),
+            counter('py-4')(model),
         ])
         : div({ className }, [
             courseList(filterCategoryMsg)(dispatch)(model)
@@ -74,9 +79,9 @@ const categoryView = className => dispatch => model =>
 
 
 const fullCardViewLearnMode = dispatch => model => {
-    return div({ className: 'container mx-auto border p-10' }, [
+    return div({ className: 'container mx-auto' }, [
         h1({ className: 'my-8' }, 'Learn Cards'),
-        categoryView('border p-8')(dispatch)(model)
+        categoryView('')(dispatch)(model)
     ])
 }
 

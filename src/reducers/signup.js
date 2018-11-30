@@ -22,7 +22,7 @@ const capturePin = pin => model => ({
 
 export const signUpNewUser = model =>
     ([
-        { ...model },
+        { ...model, signup: { ...model.signup, singupView: false, confirmationView: true } },
         {
             request: 'signup',
         },
@@ -33,6 +33,7 @@ export const signUpNewUser = model =>
 export const successSignUp = message => model =>
     ({
         ...model,
+        signup: { ...model.signup, signupView: false, confirmationView: true },
         user: { ...model.user, showConfirmation: true, message }
     })
 
@@ -40,7 +41,11 @@ export const confirmSignUp = model =>
     ([{ ...model }, { request: 'confirmation' }])
 
 export const successConfirmation = message => model =>
-    ({ ...model, user: { ...model.user, message } })
+    ({
+        ...model,
+        signup: { ...model.signup, confirmationView: false, loginView: true },
+        user: { ...model.user, message }
+    })
 
 export const signIn = model =>
     ([{ ...model }, { request: 'signin' }])
@@ -51,14 +56,11 @@ export const successSignIn = message => model =>
 export const assignAccessToken = accessToken => model =>
     ({ ...model, user: { ...model.user, accessToken } })
 
-const initModelAuth = {
-    username: '',
-    password: '',
-    email: '',
-    pin: '',
-    showConfirmation: true,
-    message: '',
-    accessToken: '',
-}
+export const loginFromSignup = model =>
+    ({ ...model, signup: { ...model.signup, signupView: false, loginView: true } })
 
-export { initModelAuth, captureUsername, capturePassword, captureEmail, capturePin }
+export const signupFromLogin = model =>
+    ({ ...model, signup: { ...model.signup, signupView: true, loginView: false } })
+
+
+export { captureUsername, capturePassword, captureEmail, capturePin }

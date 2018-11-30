@@ -1,13 +1,16 @@
-import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion } from './store/repeat'
-import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './store/learn'
-import { addNewQuestionToModel, addNewAnswerToModel, addNewCategoryToModel, saveNewQuestion, addNewCardToCards } from './store/add-question'
-import { changeUrlState } from './store/router'
-import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken } from './store/auth'
-import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards, loadInitState, resetViews } from './store/init'
-import { addNewCourse, addNewCourseName, updateCourseList } from './store/courses'
-import { filterCategory, filterCategoryRepetition } from './store/filter'
+import { startRepeat, showRepeatAnswer, answerRepeatStatus, nextRepeatQuestion } from './reducers/repeat'
+import { startQuiz, showAnswer, navigateToNextQuestion, setAnswerStatus } from './reducers/learn'
+import { addNewQuestionToModel, addNewAnswerToModel, addNewCategoryToModel, saveNewQuestion, addNewCardToCards } from './reducers/add-question'
+import { changeUrlState } from './reducers/router'
+import { captureUsername, capturePassword, captureEmail, capturePin, signUpNewUser, successSignUp, confirmSignUp, successConfirmation, signIn, successSignIn, assignAccessToken, loginFromSignup, signupFromLogin } from './reducers/signup'
+import { loadTodayCardsIntoModel, updateCardsOnload, initLoadAllCards, loadInitState, resetViews } from './reducers/init'
+import { addNewCourse, addNewCourseName, updateCourseList } from './reducers/courses'
+import { filterCategory, filterCategoryRepetition } from './reducers/filter'
+import { signupFromLoginMsg } from './actions/signup';
 
-const MSGS = {
+
+/* We can call it constants to combine them together with actions and reducers */
+export const MSGS = {
     LOAD_ALL_CARDS: 'LOAD_ALL_CARDS',
     UPDATE_CARDS_ONLOAD: 'UPDATE_CARDS_ONLOAD',
     LOAD_TODAYS_CARDS: 'LOAD_TODAYS_CARDS',
@@ -44,8 +47,11 @@ const MSGS = {
     FILTER_CATEGORY: 'FILTER_CATEGORY',
     FiLTER_CATEGORY_REPETITION: 'FILTER_CATEGORY_REPETITION',
     RESET_VIEWS: 'RESET_VIEWS',
+    LOGIN_FROM_SIGNUP: 'LOGIN_FROM_SIGNUP',
+    SIGNUP_FROM_LOGIN: 'SIGNUP_FROM_LOGIN',
 }
 
+/* ACTIONS: This are actions and should be separated into it's own folder*/
 export const showRepeatAnswerMsg = () => ({ type: MSGS.SHOW_REPEAT_ANSWER })
 export const answerRepeatStatusMsg = status => ({ type: MSGS.ANSWER_REPEAT_STATUS, status })
 export const nextRepeatQuestionMsg = () => ({ type: MSGS.NEXT_REPEAT_QUESTION })
@@ -62,7 +68,6 @@ export const submitUsernameMsg = value => ({ type: MSGS.SUBMIT_USERNAME, value }
 export const submitUserPasswordMsg = value => ({ type: MSGS.SUBMIT_PASSWORD, value })
 export const submitUserEmailMsg = value => ({ type: MSGS.SUBMIT_EMAIL, value })
 export const submitUserPinMsg = value => ({ type: MSGS.SUBMIT_PIN, value })
-export const signupNewUserMsg = () => ({ type: MSGS.SIGN_UP })
 export const singupNewUserConfirmationMsg = () => ({ type: MSGS.SIGN_UP_CONFRIMATION })
 export const successSignUpMsg = msg => ({ type: MSGS.SUCCESS_SIGN_UP, msg })
 export const confirmSignUpMsg = () => ({ type: MSGS.CONFIRM_SIGN_UP })
@@ -91,6 +96,7 @@ const switchcase = cases => key => model =>
         : model /* this is an defaultCase for the switch loop here */
 
 
+/* REDUCERS: These are the reducers and should be separated into it's own folder*/
 const update = (msg, model) =>
     switchcase({
         [MSGS.START_QUIZ]: () => startQuiz(model),
@@ -129,7 +135,9 @@ const update = (msg, model) =>
         [MSGS.LOAD_INIT_STATE]: () => loadInitState(model),
         [MSGS.FILTER_CATEGORY]: () => filterCategory(msg.categoryName)(model),
         [MSGS.FiLTER_CATEGORY_REPETITION]: () => filterCategoryRepetition(msg.categoryName)(model),
-        [MSGS.RESET_VIEWS]: () => resetViews(model)
+        [MSGS.RESET_VIEWS]: () => resetViews(model),
+        [MSGS.LOGIN_FROM_SIGNUP]: () => loginFromSignup(model),
+        [MSGS.SIGNUP_FROM_LOGIN]: () => signupFromLogin(model)
     })(msg.type)(model)
 
 
