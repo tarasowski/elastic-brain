@@ -47,7 +47,7 @@ const addNewCourseView = className => dispatch => model =>
     ])
 
 export const courseView = dispatch => model =>
-    div({ className: 'container mx-auto' }, [
+    div({ className: 'container mx-auto py-8' }, [
         h1({ className: 'my-8' }, 'Your Courses'),
         addNewCourseView('py-4')(dispatch)(model),
         courseList('text-blue')(dispatch)(model),

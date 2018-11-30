@@ -79,7 +79,7 @@ const categoryView = className => dispatch => model =>
 
 
 const fullCardViewLearnMode = dispatch => model => {
-    return div({ className: 'container mx-auto' }, [
+    return div({ className: 'container mx-auto py-8' }, [
         h1({ className: 'my-8' }, 'Learn Cards'),
         categoryView('')(dispatch)(model)
     ])

@@ -6,12 +6,12 @@ import signupView from './components/Signup';
 const { h1, div, pre, p, br, hr, button } = hh(h)
 
 function view(dispatch, model, routes) {
-    return div({ className: 'bg-grey-lighter font-sans' }, [
+    return div({ className: 'bg-grey-lighter font-sans h-screen' }, [
         navigation(dispatch),
         model.user.accessToken === ''
             ? signupView(dispatch)(model)
             : routes(dispatch)(model),
-        pre({ className: '' }, JSON.stringify(model, null, 4)),
+        //pre({ className: '' }, JSON.stringify(model, null, 4)),
     ])
 }
 
